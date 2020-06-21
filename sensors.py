@@ -1,9 +1,13 @@
 #!/usr/bin/python
 
-## Running the "sensors" terminal command from within Python script
+# Change the permissions of this file so it's executable by cron, e.g.
+# chmod a+x sensors.py
+
+"""Execute the "sensors" terminal command from this Python script
+and record the output in a file"""
 import subprocess
-import re
 import datetime
+import re
 import sys
 
 OUT_FILENAME = "sensors.out"
@@ -27,14 +31,13 @@ else:
     err = stderr.decode("utf-8")
 
 if out:
-    re_result = re.findall(r"(.*\+[8-9]\d\.\d).C", out)
+    re_result = re.findall(r"(.*\+[7-9]\d\.\d).C", out)
     if re_result:
         # N.B. If this code is run by cron as user earl, the sensors.out file will be in /home/earl
         with open(OUT_FILENAME, "a") as fp:
             fp.write("\n========= " + now + "\n")
             for res in re_result:
                 fp.write(res + "\n")
-
 else:
     with open(OUT_FILENAME, "a") as fp:
         fp.write("\n========= " + now + "\n")
