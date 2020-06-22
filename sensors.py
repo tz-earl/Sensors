@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Change the permissions of this file so it's executable by cron, e.g.
 # chmod a+x sensors.py
@@ -31,7 +31,7 @@ else:
     err = stderr.decode("utf-8")
 
 if out:
-    re_result = re.findall(r"(.*\+[7-9]\d\.\d).C", out)
+    re_result = re.findall(r"(.*\[^=] +[8-9]\d\.\d).C", out)
     if re_result:
         # N.B. If this code is run by cron as user earl, the sensors.out file will be in /home/earl
         with open(OUT_FILENAME, "a") as fp:
